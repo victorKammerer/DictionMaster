@@ -9,7 +9,7 @@ import SwiftUI
 
 class MainViewModel: ObservableObject {
     @Published var searchWord: String = ""
-    @Published var searchResults: Word
+    @Published var searchResults: [Word] = []
     
     func search() {
         guard let url = URL(string: "https://api.dictionaryapi.dev/api/v2/entries/en/\(searchWord)") else {
@@ -30,7 +30,7 @@ class MainViewModel: ObservableObject {
             
             do {
                 // Decode JSON response into an array of Word objects
-                let decodedResponse = try JSONDecoder().decode(Word.self, from: data)
+                let decodedResponse = try JSONDecoder().decode([Word].self, from: data)
                 
                 // Update searchResults with the decoded response
                 DispatchQueue.main.async {

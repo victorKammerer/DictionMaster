@@ -14,7 +14,7 @@ struct ResultView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Text("Search results for: \(searchWord)")
+                Text("Search results for:")
                     .font(.title)
                     .fontWeight(.bold)
                     .padding()
