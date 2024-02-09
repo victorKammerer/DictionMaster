@@ -22,6 +22,7 @@
 		8765E3A62B7021E000A90EA4 /* WordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8765E3A52B7021DF00A90EA4 /* WordModel.swift */; };
 		87E870BB2B703DCF00124DC0 /* AudioButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E870BA2B703DCF00124DC0 /* AudioButtonView.swift */; };
 		87E870BD2B704CDB00124DC0 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E870BC2B704CDB00124DC0 /* SearchViewModel.swift */; };
+		A2EBA14B2B75950500062D8E /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EBA14A2B75950500062D8E /* PreviewProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		8765E3A52B7021DF00A90EA4 /* WordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordModel.swift; sourceTree = "<group>"; };
 		87E870BA2B703DCF00124DC0 /* AudioButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioButtonView.swift; sourceTree = "<group>"; };
 		87E870BC2B704CDB00124DC0 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		A2EBA14A2B75950500062D8E /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 		8765E37A2B6EBD4A00A90EA4 /* VictorKammerer */ = {
 			isa = PBXGroup;
 			children = (
+				A2EBA1492B7594F500062D8E /* Extensions */,
 				870CB5D92B702AD900F6AADF /* Services */,
 				8765E38D2B6ECB4A00A90EA4 /* Models */,
 				8765E3A22B70189D00A90EA4 /* Core */,
@@ -212,6 +215,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		A2EBA1492B7594F500062D8E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A2EBA14A2B75950500062D8E /* PreviewProvider.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -287,6 +298,7 @@
 				87E870BB2B703DCF00124DC0 /* AudioButtonView.swift in Sources */,
 				870CB5E02B702C5700F6AADF /* ResultViewModel.swift in Sources */,
 				8765E39E2B700B0100A90EA4 /* RectangleButtonView.swift in Sources */,
+				A2EBA14B2B75950500062D8E /* PreviewProvider.swift in Sources */,
 				8765E3952B6EF5E800A90EA4 /* ResultView.swift in Sources */,
 				8765E37C2B6EBD4A00A90EA4 /* VictorKammererApp.swift in Sources */,
 				8765E39B2B6FF95500A90EA4 /* SearchBarView.swift in Sources */,

@@ -11,12 +11,16 @@ import SwiftData
 @main
 struct VictorKammererApp: App {
         
+    @StateObject private var vm = ResultViewModel()
+    
     var body: some Scene {
         WindowGroup {
             NavigationView {
                 MainView()
                     .toolbar(.hidden)
+                
             }
+            .environmentObject(vm)
         }
     }
 }

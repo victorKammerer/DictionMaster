@@ -22,7 +22,7 @@ struct MainView: View {
                 searchBar
                 Spacer()
                 RectangleButtonView(buttonText: "SEARCH") {
-                    
+                    print(searchWord)
                 }
             }
         }

@@ -48,7 +48,7 @@ struct WordView: View {
 
 struct WordView_Previews: PreviewProvider {
     static var previews: some View {
-        WordView(word: Word(word: "Hello", phonetics: [Phonetic(text: "həˈləʊ", audio: "//ssl.gstatic.com/dictionary/static/sounds/20200429/hello--_gb_1.mp3")], origin: "early 19th century: variant of earlier hollo ; related to holla.", meanings: [Meaning(partOfSpeech: "exclamation", definitions: [Definition(definition: "used as a greeting or to begin a phone conversation.", example: "hello there, Katie! ")])]))
+        WordView(word: dev.word)
     }
 }
 

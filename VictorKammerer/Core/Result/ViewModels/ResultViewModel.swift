@@ -9,7 +9,20 @@ import Foundation
 
 class ResultViewModel: ObservableObject {
     
-    @Published var allWords: [Word] = []
+    @Published var searchWord: String = ""
+    @Published var searchedWord: [Word] = []
     
-    private let dataService = WordDataService() 
+    private let dataService = WordDataService()
+    
+    init() {
+        addWord()
+    }
+    
+    func addWord() {
+        dataService.$searchedWord
+            .sink { [weak self] (returnedWord) in
+                self?.searchedWord = returnedWord
+            }
+    }
+
 }

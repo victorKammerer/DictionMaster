@@ -9,20 +9,25 @@ import SwiftUI
 import AVKit
 
 struct ResultView: View {
-    let searchWord: Word
+    
+    @EnvironmentObject private var vm: ResultViewModel
     
     var body: some View {
         ScrollView {
             VStack {
-                Text("Search results for:")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .padding()
-                
-//                WordView(word: )
-//                    .padding()
+                WordView(word: vm.searchedWord)
             }
         }
+    }
+}
+
+struct ResultView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            ResultView()
+                .toolbar(.hidden)
+        }
+        .environmentObject(dev.resultVM)
     }
 }
 
