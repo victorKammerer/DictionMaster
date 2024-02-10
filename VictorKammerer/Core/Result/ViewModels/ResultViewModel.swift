@@ -2,7 +2,7 @@
 //  ResultViewModel.swift
 //  VictorKammerer
 //
-//  Created by Wilma Ferreira on 04/02/24.
+//  Created by Victor Kammerer on 04/02/24.
 //
 
 import Foundation

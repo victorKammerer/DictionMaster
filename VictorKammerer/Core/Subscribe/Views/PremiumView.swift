@@ -44,7 +44,7 @@ extension PremiumView {
     
     private var promoText: some View {
         VStack {
-            Text("\(Text("Subscribe now to get").foregroundStyle(.black)) \(Text("unlimited").foregroundStyle(Color("lightBlue"))) \(Text("searches and full access to").foregroundStyle(.black)) \(Text("all features").foregroundStyle(Color("lightBlue"))) ")
+            Text("\(Text("Subscribe now to get").foregroundStyle(Color.theme.black)) \(Text("unlimited").foregroundStyle(Color.theme.lightBlue)) \(Text("searches and full access to").foregroundStyle(Color.theme.black)) \(Text("all features").foregroundStyle(Color.theme.lightBlue)) ")
                 .multilineTextAlignment(.center)
                 .font(.system(size: 20, weight: .bold, design: .rounded))
                 .padding()

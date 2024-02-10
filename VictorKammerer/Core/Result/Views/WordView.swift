@@ -2,7 +2,7 @@
 //  WordView.swift
 //  VictorKammerer
 //
-//  Created by Wilma Ferreira on 04/02/24.
+//  Created by Victor Kammerer on 04/02/24.
 //
 
 import SwiftUI
@@ -29,8 +29,7 @@ struct ResultView: View {
                     Spacer()
                 }
                 resultContent
-            }.padding(.top, 10)
-            Spacer(minLength: 50)
+            }
             
             resultBottom
             
@@ -41,7 +40,7 @@ struct ResultView: View {
 }
 
 #Preview {
-    let genericWord = Word(word: "", phonetics: [Phonetic(text: "oi", audio: "oi")], meanings: [Meaning(partOfSpeech: "oi", definitions: [Definition(definition: "blabkjijojojoblabla", example: "blabaknknnolbala")])])
+    let genericWord = Word(word: "Education", phonetics: [Phonetic(text: "/ˌedʒuˈkeɪʃn/", audio: "oi")], meanings: [Meaning(partOfSpeech: "uncountable, countable", definitions: [Definition(definition: "a process of teaching, training and learning, especially in schools, colleges or universities, to improve knowledge and develop skills", example: "oi")])])
     return ResultView(word: genericWord, searchedWord: .constant(""))
 }
 
@@ -51,13 +50,13 @@ extension ResultView {
         VStack (alignment: .leading, spacing: 13) {
             Text(word.word)
                 .font(.system(size: 45, weight: .bold, design: .rounded))
-                .foregroundStyle(Color.black)
+                .foregroundStyle(Color.theme.black)
             HStack {
                 AudioButtonView()
                 
                 Text(vm.phoneticText() ?? "")
                     .font(.system(size: 22, weight: .bold, design: .rounded))
-                    .foregroundStyle(.black.opacity(0.4))
+                    .foregroundStyle(Color.theme.black.opacity(0.4))
             }
         }
     }
@@ -69,15 +68,9 @@ extension ResultView {
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
                         if let initialDef = meaning.definitions.first {
-                            Text("\(index + 1)) ")
+                            
+                            Text("\(Text("\(index + 1)").foregroundStyle(Color.theme.black)) \(Text("[\(meaning.partOfSpeech)] ").foregroundStyle(Color.theme.black.opacity(0.5))) \(Text("\(initialDef.definition)").foregroundStyle(Color.theme.black)) ")
                                 .font(.system(size: 16, weight: .bold, design: .rounded))
-                                .foregroundColor(.black)
-                            + Text("[\(meaning.partOfSpeech)] ")
-                                .font(.system(size: 16, weight: .bold, design: .rounded))
-                                .foregroundColor(.black.opacity(0.5))
-                            + Text("\(initialDef.definition)")
-                                .font(.system(size: 16, weight: .bold, design: .rounded))
-                                .foregroundColor(.black)
                         }
                         Spacer()
                     }
@@ -85,7 +78,7 @@ extension ResultView {
                     ForEach(meaning.definitions.dropFirst(), id: \.self) { definition in
                         Text("• \(definition.definition)")
                             .font(.system(size: 16, weight: .regular, design: .rounded))
-                            .foregroundColor(.black)
+                            .foregroundColor(Color.theme.black)
                     }
                 }
             }
@@ -93,23 +86,23 @@ extension ResultView {
     }
     
     var resultBottom: some View {
-        VStack {
+        VStack(alignment: .center) {
             Divider()
+            
             HStack {
                 Text("That’s it for “\(word.word)”!")
                     .font(.system(size: 24, weight: .bold, design: .rounded))
-                    .foregroundColor(.black)
+                    .foregroundColor(Color.theme.black)
                 Spacer()
-            }
-            .padding(.top, 20)
+            }.padding(.top, 35.5)
             
             HStack {
                 Text("Try another search now!")
                     .font(.system(size: 16, weight: .regular, design: .rounded))
-                    .foregroundColor(.black)
+                    .foregroundColor(Color.theme.black)
                 Spacer()
-            }
-            .padding(.top, 1)
+            }.padding(.bottom, 20)
+            
             RectangleButtonView(buttonText: "NEW SEARCH") {
                 DispatchQueue.main.async {
                     self.searchedWord = ""

@@ -5,6 +5,8 @@
 //  Created by Victor Kammerer on 04/02/24.
 //
 
+
+
 import Foundation
 
 struct Word: Codable {

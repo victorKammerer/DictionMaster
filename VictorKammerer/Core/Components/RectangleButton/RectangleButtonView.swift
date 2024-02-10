@@ -15,7 +15,7 @@ struct RectangleButtonView: View {
     var body: some View {
         Text(buttonText)
             .frame(width: 358, height: 64)
-            .background(Color("lightBlue"))
+            .background(Color.theme.lightBlue)
             .font(.system(size: 18, weight: .bold, design: .rounded))
             .foregroundStyle(.white)
             .clipShape(RoundedRectangle(cornerRadius: 14))
