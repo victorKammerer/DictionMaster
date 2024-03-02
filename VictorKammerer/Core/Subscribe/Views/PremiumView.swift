@@ -10,12 +10,13 @@ import SwiftUI
 struct PremiumView: View {
     
     @StateObject var vm = SearchViewModel()
-    @State private var subscribedView: Bool = false
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Binding var searchedWord: String
+    
+    @Binding var isVisible: Bool
+
     
     var body: some View {
         ZStack (alignment: .bottom) {
-            //background
             Image("premiumPhoto")
                 .ignoresSafeArea()
                 .position(x: 196.5, y: 230)
@@ -25,18 +26,19 @@ struct PremiumView: View {
                 promoText
                 
                 RectangleButtonView(buttonText: "SUBSCRIBE") {
-                    vm.searchedWord = ""
-                    presentationMode.wrappedValue.dismiss()
+                    DispatchQueue.main.async {
+                        self.searchedWord = ""
+                        isVisible = false
+                    }
                 }
             }
         }
     }
-    
 }
 
 struct PremiumView_Previews: PreviewProvider {
     static var previews: some View {
-        PremiumView()
+        PremiumView(searchedWord: .constant(""), isVisible: .constant(true))
     }
 }
 
@@ -63,8 +65,9 @@ extension PremiumView {
         VStack() {
             Image("icon")
                 .padding(-25)
+                .shadow(radius: 8)
             Image("title")
-                .padding(.init(top: -25, leading: 0, bottom: -30, trailing: -30))
+                .padding(.init(top: -25, leading: 0, bottom: -30, trailing: -45))
         }
     }
 }

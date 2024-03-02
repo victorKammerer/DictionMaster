@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class SearchViewModel: ObservableObject {
     @Published var searchedWord: String = ""
@@ -14,7 +15,6 @@ class SearchViewModel: ObservableObject {
     @Published var resultAppearing = false
     @Published var word: Word?
     
-    // Implementação do Cache de busca baseado em user default.
     private var searchedWordCache: [String: Word] {
         get {
             if let data = UserDefaults.standard.data(forKey: "wordCache"),
@@ -55,6 +55,9 @@ class SearchViewModel: ObservableObject {
             resultAppearing = true
         } else {
             if Calendar.current.isDateInToday(Date(timeIntervalSinceReferenceDate: lastSearchDate)) && searchCount >= 5 {
+                if resultAppearing {
+                    resultAppearing = false
+                }
                 subscribeAppearing = true
                 return
             } else {
@@ -81,6 +84,6 @@ class SearchViewModel: ObservableObject {
     }
     
     func buttonAppears() {
-            buttonAppearing = !searchedWord.isEmpty
-        }
+        buttonAppearing = !searchedWord.isEmpty
+    }
 }

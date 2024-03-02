@@ -13,10 +13,8 @@ struct VictorKammererApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationView {
+            NavigationStack(){
                 SearchView()
-                    .toolbar(.hidden)
-                
             }
         }
     }

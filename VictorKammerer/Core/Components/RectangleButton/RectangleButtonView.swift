@@ -19,8 +19,12 @@ struct RectangleButtonView: View {
             .font(.system(size: 18, weight: .bold, design: .rounded))
             .foregroundStyle(.white)
             .clipShape(RoundedRectangle(cornerRadius: 14))
+            .kerning(1.8)
             .onTapGesture {
-                action()
+                withAnimation(.easeInOut) {
+                    action()
+                        
+                }
             }
     }
 }

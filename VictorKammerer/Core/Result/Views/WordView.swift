@@ -12,47 +12,66 @@ struct ResultView: View {
     
     let word: Word
     @StateObject private var vm: ResultViewModel
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Binding var searchedWord: String
+    @Binding var isVisible: Bool
+    @State private var audioPressed = false
+    @Environment(\.dismiss) private var dismiss
+    @State private var isSearchPresented = false
+    @State private var isResultPresented = true
     
-    init(word: Word, searchedWord: Binding<String>) {
+    init(word: Word, searchedWord: Binding<String>, isVisible: Binding<Bool>) {
         self.word = word
         self._searchedWord = searchedWord
         self._vm = StateObject(wrappedValue: ResultViewModel(word: word))
+        self._isVisible = isVisible
     }
     
     var body: some View {
-        VStack {
-            ScrollView{
-                HStack {
-                    resultHeader
-                    Spacer()
-                }
-                resultContent
+        VStack (spacing: 20) {
+            HStack {
+                resultHeader
+                Spacer()
             }
+            
+            ScrollView{
+                
+                resultContent
+                
+            }.scrollIndicators(.hidden)
             
             resultBottom
             
         }
         .padding(.horizontal, 20)
-        Spacer()
     }
 }
 
 #Preview {
-    let genericWord = Word(word: "Education", phonetics: [Phonetic(text: "/ˌedʒuˈkeɪʃn/", audio: "oi")], meanings: [Meaning(partOfSpeech: "uncountable, countable", definitions: [Definition(definition: "a process of teaching, training and learning, especially in schools, colleges or universities, to improve knowledge and develop skills", example: "oi")])])
-    return ResultView(word: genericWord, searchedWord: .constant(""))
+    let genericWord = Word(word: "education", phonetics: [Phonetic(text: "/ˌedʒuˈkeɪʃn/", audio: "oi")], meanings: [Meaning(partOfSpeech: "uncountable, countable", definitions: [Definition(definition: "A process of teaching, training and learning, especially in schools, colleges or universities, to improve knowledge and develop skills", example: "oi")]), Meaning(partOfSpeech: "noun", definitions: [Definition(definition: "aaaaaaaa", example: "oi")])])
+    return ResultView(word: genericWord, searchedWord: .constant(""), isVisible: .constant(true))
 }
 
 extension ResultView {
     
     var resultHeader: some View {
         VStack (alignment: .leading, spacing: 13) {
-            Text(word.word)
+            Text(word.word.capitalized)
                 .font(.system(size: 45, weight: .bold, design: .rounded))
                 .foregroundStyle(Color.theme.black)
-            HStack {
+            
+            HStack (spacing: 11) {
                 AudioButtonView()
+                    .onTapGesture {
+                        audioPressed.toggle()
+                        vm.playAudio()
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation {
+                                audioPressed = false
+                            }
+                        }
+                    }
+                
                 
                 Text(vm.phoneticText() ?? "")
                     .font(.system(size: 22, weight: .bold, design: .rounded))
@@ -62,18 +81,19 @@ extension ResultView {
     }
     
     var resultContent: some View {
-        VStack() {
+        VStack(spacing: 30) {
             ForEach(word.meanings.indices, id: \.self) { index in
                 let meaning = word.meanings[index]
-                VStack(alignment: .leading, spacing: 5) {
+                VStack(alignment: .leading) {
                     HStack {
                         if let initialDef = meaning.definitions.first {
                             
-                            Text("\(Text("\(index + 1)").foregroundStyle(Color.theme.black)) \(Text("[\(meaning.partOfSpeech)] ").foregroundStyle(Color.theme.black.opacity(0.5))) \(Text("\(initialDef.definition)").foregroundStyle(Color.theme.black)) ")
+                            Text("\(Text("\(index + 1))").foregroundStyle(Color.theme.black)) \(Text("[\(meaning.partOfSpeech)] ").foregroundStyle(Color.theme.black.opacity(0.5))) \(Text("\(initialDef.definition)").foregroundStyle(Color.theme.black)) ")
                                 .font(.system(size: 16, weight: .bold, design: .rounded))
+                                .textCase(.lowercase)
                         }
                         Spacer()
-                    }
+                    }.padding(.vertical	)
                     
                     ForEach(meaning.definitions.dropFirst(), id: \.self) { definition in
                         Text("• \(definition.definition)")
@@ -106,9 +126,10 @@ extension ResultView {
             RectangleButtonView(buttonText: "NEW SEARCH") {
                 DispatchQueue.main.async {
                     self.searchedWord = ""
-                    self.presentationMode.wrappedValue.dismiss()
+                    isVisible = false
                 }
+                
             }
-        }
+        }.padding(.vertical)
     }
 }

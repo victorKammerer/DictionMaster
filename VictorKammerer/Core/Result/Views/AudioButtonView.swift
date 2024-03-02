@@ -9,13 +9,12 @@ import SwiftUI
 
 struct AudioButtonView: View {
     var body: some View {
-        Image(systemName: "speaker.wave.2")
+        Image("audio-speaker-on")
             .font(.headline)
-            .foregroundStyle(.white)
             .frame(width: 46, height: 46)
             .background(
                 Circle()
-                    .foregroundStyle(.lightBlue)
+                    .foregroundStyle(Color.theme.lightBlue)
             )
     }
 }
