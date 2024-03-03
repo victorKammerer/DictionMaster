@@ -16,19 +16,26 @@ struct PremiumView: View {
 
     
     var body: some View {
-        ZStack (alignment: .bottom) {
-            Image("premiumPhoto")
-                .ignoresSafeArea()
-                .position(x: 196.5, y: 230)
-            
-            VStack() {
-                logo
-                promoText
+        GeometryReader { geo in
+            ZStack (alignment: .bottom) {
                 
-                RectangleButtonView(buttonText: "SUBSCRIBE") {
-                    DispatchQueue.main.async {
-                        self.searchedWord = ""
-                        isVisible = false
+                Color(Color.background)
+                    .ignoresSafeArea()
+                Image("premiumPhoto")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .ignoresSafeArea()
+                    .position(x: geo.size.width * 0.5, y: geo.size.height * 0.3)
+                
+                VStack() {
+                    logo
+                    promoText
+                    
+                    RectangleButtonView(buttonText: "SUBSCRIBE", buttonColor: nil) {
+                        DispatchQueue.main.async {
+                            self.searchedWord = ""
+                            isVisible = false
+                        }
                     }
                 }
             }
@@ -67,7 +74,7 @@ extension PremiumView {
                 .padding(-25)
                 .shadow(radius: 8)
             Image("title")
-                .padding(.init(top: -25, leading: 0, bottom: -30, trailing: -45))
+                .padding(.init(top: -25, leading: 10, bottom: -30, trailing: -30))
         }
     }
 }

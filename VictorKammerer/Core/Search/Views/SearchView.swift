@@ -13,58 +13,87 @@ struct SearchView: View {
     
     @StateObject var vm = SearchViewModel()
     
-    @State private var isSearchPresented = true
     @State private var isResultPresented = false
     @State private var isPremiumPresented = false
-    
     @State private var isFSPresented = false
     
-    @Environment(\.dismiss) private var dismiss
+    @State var buttonString: String = "SEARCH"
+    @State var buttonColor: Color = Color.theme.lightBlue
+    
     @FocusState var isSearchFieldFocused: Bool
     
     var body: some View {
-        VStack {
-            LanguageSelectorView()
-                .padding()
-            Spacer()
-            searchBar
-            Spacer()
-            
-            if vm.buttonAppearing {
-                RectangleButtonView(buttonText: "SEARCH") {
-                    vm.searchWord()
-                    isFSPresented = true
-                }.padding()
-            }
-        }.fullScreenCover(isPresented: $isFSPresented) {
-            Group {
-              if isResultPresented {
-                  vm.word.map { ResultView(word: $0, searchedWord: $vm.searchedWord, isVisible: $isResultPresented)
-                  }
-                  .onDisappear {
-                    isFSPresented = false
-                  }
-              } else if isPremiumPresented {
-                  PremiumView(searchedWord: $vm.searchedWord, isVisible: $isPremiumPresented)
-                      .onDisappear {
-                        isFSPresented = false
-                      }
-              }
-            }
-            .onAppear {
-                if vm.resultAppearing {
-                    isResultPresented = true
-                } else {
-                    isPremiumPresented = true
+        ZStack {
+            Color(Color.background)
+                .ignoresSafeArea()
+                
+            VStack {
+                LanguageSelectorView()
+                    .padding()
+                Spacer()
+                searchBar
+                Spacer()
+                
+                if vm.buttonAppearing {
+                    
+                    RectangleButtonView(buttonText: buttonString, buttonColor: buttonColor) {
+                        withAnimation {
+                            buttonString = "LOADING..."
+                        }
+                        
+                        vm.searchWord()
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            if vm.isWrongEntry {
+                                buttonString = "INVALID ENTRY"
+                                buttonColor = Color.red
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    vm.searchedWord = ""
+                                    
+                                    buttonColor = Color.lightBlue
+                                    buttonString = "SEARCH"
+                                }
+                            }
+                        }
+                    }.padding()
+                }
+            }.fullScreenCover(isPresented: $vm.fullScreenAppearing) {
+                Group {
+                    if isResultPresented {
+                        vm.word.map { ResultView(word: $0, searchedWord: $vm.searchedWord, isVisible: $isResultPresented)
+                        }
+                        .onDisappear {
+                            buttonString = "SEARCH"
+                            vm.fullScreenAppearing = false
+                            vm.isWrongEntry = false
+                            
+                        }
+                    } else if isPremiumPresented {
+                        PremiumView(searchedWord: $vm.searchedWord, isVisible: $isPremiumPresented)
+                            .onDisappear {
+                                buttonString = "SEARCH"
+                                vm.fullScreenAppearing = false
+                                
+                                vm.isWrongEntry = false
+                            }
+                    }
+                }.onAppear {
+                    if vm.resultAppearing {
+                        isResultPresented = true
+                    
+                    } else if vm.subscribeAppearing {
+                        isPremiumPresented = true
+                    }
+                    
                 }
             }
-          }
         .transaction({ transaction in
-            
-            transaction.disablesAnimations = true
-            
-            transaction.animation = .easeInOut(duration: 0.2)
-        })
+                
+                transaction.disablesAnimations = true
+                
+                    transaction.animation = .easeInOut(duration: 0.3)
+            })
+        }
     }
 }
 

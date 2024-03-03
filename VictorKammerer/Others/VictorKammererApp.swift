@@ -13,9 +13,7 @@ struct VictorKammererApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack(){
-                SearchView()
-            }
+            SearchView()
         }
     }
 }

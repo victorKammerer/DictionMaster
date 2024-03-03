@@ -7,13 +7,17 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 class SearchViewModel: ObservableObject {
     @Published var searchedWord: String = ""
     @Published var buttonAppearing: Bool = false
     @Published var subscribeAppearing: Bool = false
-    @Published var resultAppearing = false
+    @Published var resultAppearing: Bool = false
+    @Published var fullScreenAppearing: Bool = false
     @Published var word: Word?
+    @Published var isLoading: Bool = false
+    @Published var isWrongEntry: Bool = false
     
     private var searchedWordCache: [String: Word] {
         get {
@@ -53,32 +57,34 @@ class SearchViewModel: ObservableObject {
         if let WordCache = searchedWordCache[searchedWord] {
             word = WordCache
             resultAppearing = true
+            fullScreenAppearing = true
         } else {
-            if Calendar.current.isDateInToday(Date(timeIntervalSinceReferenceDate: lastSearchDate)) && searchCount >= 5 {
-                if resultAppearing {
-                    resultAppearing = false
-                }
-                subscribeAppearing = true
-                return
-            } else {
-                fetchWord()
-            }
+            fetchWord()
         }
     }
 
     private func fetchWord() {
-        searchCount += 1
-
+        
         let apiService = WordDataService()
         
         apiService.fetchWord(for: searchedWord) { result in
+            
             switch result {
             case .success(let word):
-                self.word = word
-                self.resultAppearing = true
-                self.searchedWordCache[self.searchedWord] = word
+                if Calendar.current.isDateInToday(Date(timeIntervalSinceReferenceDate: self.lastSearchDate)) && self.searchCount >= 5 {
+                    self.resultAppearing = false
+                    self.subscribeAppearing = true
+                    self.fullScreenAppearing = true
+                } else {
+                    self.searchCount += 1
+                    self.word = word
+                    self.searchedWordCache[self.searchedWord] = word
+                    self.fullScreenAppearing = true
+                    self.resultAppearing = true
+                }
             case .failure(let error):
                 print("Error: \(error)")
+                self.isWrongEntry = true
             }
         }
     }
